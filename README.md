@@ -2,7 +2,7 @@
 
 <!--
 **s224201565/s224201565** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
- Berlin Campus Network — Cisco Configurations
+ Franfurt Campus Network — Cisco Configurations
 
 Enterprise campus network design and configuration for a multi-layer switched environment, built as part of the Advanced Diploma in Information Technology at Nelson Mandela University.
 
