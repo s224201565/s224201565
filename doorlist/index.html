@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doorlist: house party tickets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#F4EEFB; --surface:#FFFFFF; --ink:#22172E; --muted:#6B5C7B; --line:#DDD2EA;
+  --stub:#FFD23F; --stubInk:#22172E; --pink:#D6246E; --ok:#11805F; --okBg:#D7F5EA; --bad:#B42318; --badBg:#FDE3E0;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#1C1326; --surface:#2A1F38; --ink:#F6EFFF; --muted:#B4A6C6; --line:#3D2F4F;
+  --pink:#FF5DA2; --ok:#7FE0C2; --okBg:#173A31; --bad:#FF8A7A; --badBg:#44201D; }}
+:root[data-theme="dark"]{
+  --bg:#1C1326; --surface:#2A1F38; --ink:#F6EFFF; --muted:#B4A6C6; --line:#3D2F4F;
+  --pink:#FF5DA2; --ok:#7FE0C2; --okBg:#173A31; --bad:#FF8A7A; --badBg:#44201D; }
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45}
+.mono{font-family:"DM Mono",ui-monospace,Menlo,monospace}
+main{max-width:640px;margin:0 auto;padding:20px 18px 110px}
+h1{font-size:2.4rem;line-height:1;margin:6px 0 4px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:0 0 4px;font-weight:800;letter-spacing:-.01em}
+p.sub{color:var(--muted);margin:0 0 20px}
+button,input,select{font:inherit;color:inherit}
+input,select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface)}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+label{display:block;font-size:.9rem;color:var(--muted);margin:12px 0 6px}
+.btn{border:0;border-radius:999px;padding:12px 20px;font-weight:600;cursor:pointer;background:var(--ink);color:var(--bg)}
+.btn.stub{background:var(--stub);color:var(--stubInk)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{padding:8px 14px;font-size:.9rem}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.panel{background:var(--surface);border-radius:18px;padding:18px;margin:14px 0}
+/* party stubs */
+.party{display:flex;background:var(--stub);color:var(--stubInk);border-radius:14px;margin:12px 0;cursor:pointer;border:0;width:100%;text-align:left;padding:0;position:relative}
+.party .main{flex:1;padding:16px 18px}
+.party .tear{width:92px;border-left:2px dashed rgba(34,23,46,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px}
+.party::before,.party::after{content:"";position:absolute;right:83px;width:18px;height:18px;border-radius:50%;background:var(--bg)}
+.party::before{top:-9px}.party::after{bottom:-9px}
+.party b{font-size:1.3rem;display:block;line-height:1.15}
+.party small{opacity:.75}
+.tear .n{font-size:1.6rem;font-weight:800;line-height:1}
+.empty{border:2px dashed var(--line);border-radius:18px;padding:28px;text-align:center;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.stat{background:var(--surface);border-radius:14px;padding:12px}
+.stat .n{font-size:1.7rem;font-weight:800;line-height:1}
+.stat span{color:var(--muted);font-size:.85rem}
+.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--pink)}
+.guest{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.guest:first-child{border-top:0}
+.guest .who{flex:1;min-width:0}
+.guest .who b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.guest .who small{color:var(--muted)}
+.pill{font-size:.78rem;padding:3px 10px;border-radius:99px;font-weight:600;white-space:nowrap}
+.pill.valid{background:var(--okBg);color:var(--ok)}
+.pill.used{background:var(--line);color:var(--muted)}
+.pill.void{background:var(--badBg);color:var(--bad)}
+.back{background:none;border:0;color:var(--muted);padding:6px 0;cursor:pointer}
+/* door */
+.codebox{font-size:1.8rem;text-align:center;letter-spacing:.15em;text-transform:uppercase}
+.verdict{border-radius:18px;padding:22px;margin-top:16px;text-align:center}
+.verdict.ok{background:var(--okBg);color:var(--ok)}
+.verdict.bad{background:var(--badBg);color:var(--bad)}
+.verdict.warn{background:var(--stub);color:var(--stubInk)}
+.verdict h3{font-size:1.8rem;margin:0 0 4px}
+video{width:100%;border-radius:18px;background:#000;max-height:50vh;object-fit:cover}
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  display:flex;justify-content:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;max-width:200px;border:0;background:none;padding:10px;border-radius:12px;font-weight:600;color:var(--muted);cursor:pointer}
+nav button[aria-current="page"]{background:var(--ink);color:var(--bg)}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(20,10,30,.7);display:none;align-items:flex-end;justify-content:center;z-index:10}
+.modal.open{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto}
+.sheet img{width:100%;border-radius:14px;display:block;margin-bottom:12px}
+.hint{color:var(--muted);font-size:.85rem;text-align:center;margin:6px 0 12px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20}
+.toast.show{opacity:1}
+.banner{background:var(--stub);color:var(--stubInk);border-radius:12px;padding:10px 14px;font-size:.9rem;margin-bottom:12px;display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav>
+  <button id="nav-parties" aria-current="page">Parties</button>
+  <button id="nav-door">Door check</button>
+</nav>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<div id="qrtmp" style="position:absolute;left:-9999px"></div>
+
+<script>
+// ---------- data layer: shared db when available, local fallback otherwise ----------
+const state = { events: [], tickets: [], view: 'parties', eventId: null, mode: 'loading' };
+let db = null;
+const LS = 'doorlist-local';
+function loadLocal(){ try{ const d=JSON.parse(localStorage.getItem(LS)||'{}'); state.events=d.events||[]; state.tickets=d.tickets||[]; }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem(LS, JSON.stringify({events:state.events,tickets:state.tickets})); }catch(e){} }
+
+const store = {
+  async putEvent(ev){
+    if(db){ await db.doc('events/'+ev.id).set(ev); }
+    else { state.events = state.events.filter(e=>e.id!==ev.id).concat(ev); saveLocal(); render(); }
+  },
+  async putTicket(t){
+    if(db){ await db.doc('tickets/'+t.code).set(t); }
+    else { state.tickets = state.tickets.filter(x=>x.code!==t.code).concat(t); saveLocal(); render(); }
+  },
+  async patchTicket(code, patch){
+    if(db){ await db.doc('tickets/'+code).update(patch); }
+    else { const t=state.tickets.find(x=>x.code===code); if(t) Object.assign(t,patch); saveLocal(); render(); }
+  },
+  async getTicket(code){
+    if(db){ const s=await db.doc('tickets/'+code).get(); return s.exists? s.data(): null; }
+    return state.tickets.find(x=>x.code===code)||null;
+  }
+};
+
+(async function init(){
+  render();
+  try { db = window.claude ? await window.claude.use('db') : null; } catch(e){ db = null; }
+  if(db){
+    state.mode='shared';
+    db.collection('events').onSnapshot(s=>{ state.events=s.docs.map(d=>d.data()); render(); }, ()=>{});
+    db.collection('tickets').onSnapshot(s=>{ state.tickets=s.docs.map(d=>d.data()); render(); }, ()=>{});
+  } else { state.mode='local'; loadLocal(); render(); }
+})();
+
+// ---------- helpers ----------
+const $ = s => document.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ALPH='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function newCode(){ let s=''; const a=new Uint32Array(6); crypto.getRandomValues(a); for(const n of a) s+=ALPH[n%ALPH.length]; return s; }
+const pretty = c => c.slice(0,3)+'-'+c.slice(3);
+const clean = c => (c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+function fmtDate(iso){ if(!iso) return 'Date to be announced'; const d=new Date(iso); return d.toLocaleString(undefined,{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); }
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
+const ticketsFor = id => state.tickets.filter(t=>t.eventId===id).sort((a,b)=>b.createdAt-a.createdAt);
+
+// ---------- views ----------
+function render(){
+  if(state.view!=='door') stopCamera();
+  $('#nav-parties').setAttribute('aria-current', state.view==='door'?'false':'page');
+  $('#nav-door').setAttribute('aria-current', state.view==='door'?'page':'false');
+  const app=$('#app');
+  if(state.view==='door') return renderDoor(app);
+  if(state.view==='event') return renderEvent(app);
+  if(state.view==='new') return renderNew(app);
+  renderParties(app);
+}
+
+function renderParties(app){
+  const evs=[...state.events].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  app.innerHTML = `
+    <div class="banner" style="display:${state.mode==='local'?'block':'none'}">Saving on this device only. Publish the page to share the guest list with your door crew.</div>
+    <h1>Doorlist</h1>
+    <p class="sub">Tickets for your house party. Make one per guest, send it, check it at the door.</p>
+    <button class="btn stub" id="add">Create a party</button>
+    <div id="list">${ evs.length? evs.map(e=>{
+      const ts=ticketsFor(e.id).filter(t=>t.status!=='void');
+      return `<button class="party" data-id="${e.id}">
+        <div class="main"><b>${esc(e.name)}</b><small>${esc(fmtDate(e.date))}<br>${esc(e.venue||'')}</small></div>
+        <div class="tear"><span class="n">${ts.length}</span><small>${e.capacity?'of '+e.capacity:'tickets'}</small></div>
+      </button>`}).join('') : `<div class="empty" style="margin-top:18px">No parties yet. Create one to start issuing tickets.</div>`}
+    </div>`;
+  $('#add').onclick=()=>{state.view='new';render();};
+  app.querySelectorAll('.party').forEach(b=>b.onclick=()=>{state.eventId=b.dataset.id;state.view='event';render();});
+}
+
+function renderNew(app){
+  app.innerHTML=`
+    <button class="back" id="back">Back to parties</button>
+    <h2>New party</h2>
+    <div class="panel">
+      <label for="n">Party name</label><input id="n" maxlength="60" placeholder="Summerstrand rooftop jol">
+      <label for="v">Address or area</label><input id="v" maxlength="80" placeholder="Shared with guests on the ticket">
+      <label for="d">Starts</label><input id="d" type="datetime-local">
+      <div class="grid2">
+        <div><label for="c">Guest limit</label><input id="c" type="number" min="1" inputmode="numeric" placeholder="60"></div>
+        <div><label for="p">Entry fee (R)</label><input id="p" type="number" min="0" inputmode="decimal" placeholder="0"></div>
+      </div>
+      <label for="h">Host name on tickets</label><input id="h" maxlength="40" placeholder="Hosted by…">
+      <div class="row" style="margin-top:18px"><button class="btn" id="save">Create party</button></div>
+    </div>`;
+  $('#back').onclick=()=>{state.view='parties';render();};
+  $('#save').onclick=async()=>{
+    const name=$('#n').value.trim(); if(!name){ $('#n').focus(); return toast('Give the party a name'); }
+    const ev={ id:'e'+Date.now().toString(36)+newCode().slice(0,3).toLowerCase(), name, venue:$('#v').value.trim(),
+      date:$('#d').value, capacity:parseInt($('#c').value)||0, price:parseFloat($('#p').value)||0,
+      host:$('#h').value.trim(), createdAt:Date.now() };
+    try{ await store.putEvent(ev); state.eventId=ev.id; state.view='event'; render(); }catch(e){ toast('Could not save the party. Try again.'); }
+  };
+}
+
+function renderEvent(app){
+  const e=state.events.find(x=>x.id===state.eventId);
+  if(!e){ app.innerHTML='<button class="back" id="back">Back to parties</button><p class="sub">Loading party…</p>'; $('#back').onclick=()=>{state.view='parties';render();}; return; }
+  const ts=ticketsFor(e.id), live=ts.filter(t=>t.status!=='void'), inside=ts.filter(t=>t.status==='used').length;
+  const full = e.capacity && live.length>=e.capacity;
+  app.innerHTML=`
+    <button class="back" id="back">Back to parties</button>
+    <h2>${esc(e.name)}</h2>
+    <p class="sub" style="margin:0">${esc(fmtDate(e.date))}${e.venue?'<br>'+esc(e.venue):''}</p>
+    <div class="stats">
+      <div class="stat"><div class="n">${live.length}</div><span>tickets out</span></div>
+      <div class="stat"><div class="n">${inside}</div><span>at the party</span></div>
+      <div class="stat"><div class="n">${e.capacity? Math.max(e.capacity-live.length,0):'∞'}</div><span>spots left</span>
+        ${e.capacity?`<div class="bar"><i style="width:${Math.min(100,live.length/e.capacity*100)}%"></i></div>`:''}</div>
+    </div>
+    <div class="panel">
+      <h2 style="font-size:1.15rem">Add a guest</h2>
+      <label for="g">Guest name</label><input id="g" maxlength="50" placeholder="Name as it appears on their ID">
+      <div class="grid2">
+        <div><label for="ph">Phone (optional)</label><input id="ph" type="tel" inputmode="tel" placeholder="082…"></div>
+        <div><label for="tier">Ticket</label><select id="tier"><option>General</option><option>VIP</option><option>Plus-one</option><option>Crew</option></select></div>
+      </div>
+      <div class="row" style="margin-top:16px"><button class="btn stub" id="issue" ${full?'disabled':''}>${full?'Party is full':'Create ticket'}</button></div>
+    </div>
+    <div class="panel">
+      <h2 style="font-size:1.15rem">Guest list</h2>
+      ${ts.length? ts.map(t=>`
+        <div class="guest">
+          <div class="who"><b>${esc(t.guest)}</b><small class="mono">${pretty(t.code)}</small> <small>${esc(t.tier)}</small></div>
+          <span class="pill ${t.status}">${t.status==='valid'?'Not arrived':t.status==='used'?'Checked in':'Cancelled'}</span>
+          <button class="btn ghost small" data-open="${t.code}">Ticket</button>
+        </div>`).join('') : '<p class="sub" style="margin:6px 0 0">No guests yet. Add someone above.</p>'}
+    </div>`;
+  $('#back').onclick=()=>{state.view='parties';render();};
+  $('#issue').onclick=async()=>{
+    const guest=$('#g').value.trim(); if(!guest){ $('#g').focus(); return toast('Add the guest’s name'); }
+    const t={ code:newCode(), eventId:e.id, guest, phone:$('#ph').value.trim(), tier:$('#tier').value, status:'valid', createdAt:Date.now(), checkedInAt:null };
+    try{ await store.putTicket(t); toast('Ticket created for '+guest); openTicket(t.code); }catch(err){ toast('Could not create the ticket. Try again.'); }
+  };
+  app.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openTicket(b.dataset.open));
+}
+
+// ---------- ticket image + sharing ----------
+function qrCanvas(text){
+  const box=$('#qrtmp'); box.innerHTML='';
+  new QRCode(box,{text, width:420, height:420, colorDark:'#22172E', colorLight:'#FFD23F', correctLevel:QRCode.CorrectLevel.M});
+  return box.querySelector('canvas');
+}
+function wrap(ctx,text,x,y,maxW,lh){ const words=text.split(' '); let line=''; for(const w of words){ const t=line?line+' '+w:w; if(ctx.measureText(t).width>maxW&&line){ ctx.fillText(line,x,y); y+=lh; line=w; } else line=t; } ctx.fillText(line,x,y); return y; }
+async function ticketImage(t,e){
+  await document.fonts.ready;
+  const W=900,H=1400,c=document.createElement('canvas'); c.width=W;c.height=H; const x=c.getContext('2d');
+  x.fillStyle='#FFD23F'; x.beginPath(); x.roundRect(0,0,W,H,48); x.fill();
+  x.fillStyle='#22172E';
+  x.font='600 34px "Bricolage Grotesque", sans-serif'; x.fillText(e.host?('Hosted by '+e.host):'You’re on the list',70,110);
+  x.font='800 84px "Bricolage Grotesque", sans-serif'; let y=wrap(x,e.name,70,210,W-140,88);
+  x.font='400 36px "Bricolage Grotesque", sans-serif'; y+=64; x.fillText(fmtDate(e.date),70,y);
+  if(e.venue){ y+=48; wrap(x,e.venue,70,y,W-140,44); }
+  // perforation
+  const py=820; x.fillStyle='#F4EEFB'; x.beginPath(); x.arc(0,py,34,0,7); x.arc(W,py,34,0,7); x.fill();
+  x.strokeStyle='rgba(34,23,46,.4)'; x.setLineDash([16,14]); x.lineWidth=4; x.beginPath(); x.moveTo(50,py); x.lineTo(W-50,py); x.stroke(); x.setLineDash([]);
+  x.fillStyle='#22172E';
+  x.font='600 30px "Bricolage Grotesque", sans-serif'; x.fillText('Admit',70,py+80);
+  x.font='800 56px "Bricolage Grotesque", sans-serif'; wrap(x,t.guest,70,py+145,420,60);
+  x.font='400 32px "Bricolage Grotesque", sans-serif'; x.fillText(t.tier+(e.price?'  R'+e.price:''),70,py+300);
+  x.font='500 60px "DM Mono", monospace'; x.fillText(pretty(t.code),70,py+420);
+  const q=qrCanvas('DOORLIST:'+t.code); x.drawImage(q,W-70-300,py+60,300,300);
+  x.font='400 24px "Bricolage Grotesque", sans-serif'; x.fillText('Show this at the door. One entry per ticket.',70,H-60);
+  return new Promise(r=>c.toBlob(r,'image/png'));
+}
+async function openTicket(code){
+  const t=state.tickets.find(x=>x.code===code)||await store.getTicket(code); if(!t) return;
+  const e=state.events.find(x=>x.id===t.eventId)||{name:'Party'};
+  const sheet=$('#sheet'); sheet.innerHTML='<p class="hint">Drawing ticket…</p>'; $('#modal').classList.add('open');
+  const blob=await ticketImage(t,e); const url=URL.createObjectURL(blob);
+  const msg=`Hey ${t.guest}! Your ticket for ${e.name} (${fmtDate(e.date)}${e.venue?', '+e.venue:''}). Ticket code: ${pretty(t.code)}. Show the attached QR at the door.`;
+  sheet.innerHTML=`
+    <img src="${url}" alt="Ticket for ${esc(t.guest)}">
+    <p class="hint">Long-press the ticket to save it, or use the buttons.</p>
+    <div class="row">
+      <button class="btn stub" id="share">Send ticket</button>
+      <button class="btn ghost" id="copy">Copy message</button>
+      ${t.status==='valid'?'<button class="btn ghost" id="void">Cancel ticket</button>':''}
+      <button class="btn ghost" id="close">Close</button>
+    </div>`;
+  const file=new File([blob],`ticket-${t.code}.png`,{type:'image/png'});
+  $('#share').onclick=async()=>{
+    try{ if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],text:msg}); return; } }catch(err){ if(err.name==='AbortError') return; }
+    try{ const dl=window.claude? await window.claude.use('downloads'):null; if(dl){ await dl.save({filename:file.name,data:blob}); toast('Ticket saved. Send it on WhatsApp.'); return; } }catch(err){}
+    toast('Long-press the ticket image to save it');
+  };
+  $('#copy').onclick=async()=>{ try{ await navigator.clipboard.writeText(msg); toast('Message copied'); }catch(err){ toast('Copy isn’t allowed here'); } };
+  if($('#void')) $('#void').onclick=async()=>{ if(!confirm('Cancel '+t.guest+'’s ticket? It will be refused at the door.')) return; await store.patchTicket(t.code,{status:'void'}); closeModal(); toast('Ticket cancelled'); };
+  $('#close').onclick=closeModal;
+}
+function closeModal(){ $('#modal').classList.remove('open'); }
+$('#modal').onclick=e=>{ if(e.target.id==='modal') closeModal(); };
+
+// ---------- door check ----------
+let stream=null, scanTimer=null;
+function stopCamera(){ if(scanTimer){clearInterval(scanTimer);scanTimer=null;} if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;} }
+function renderDoor(app){
+  app.innerHTML=`
+    <h1>Door check</h1>
+    <p class="sub">Scan the guest’s QR or type the code on their ticket.</p>
+    <div class="panel">
+      <label for="code">Ticket code</label>
+      <input id="code" class="mono codebox" maxlength="7" autocomplete="off" autocapitalize="characters" placeholder="ABC-123">
+      <div class="row" style="margin-top:14px">
+        <button class="btn stub" id="check">Check ticket</button>
+        <button class="btn ghost" id="cam">Scan QR</button>
+      </div>
+      <div id="camwrap" style="margin-top:14px"></div>
+    </div>
+    <div id="verdict"></div>`;
+  const run=()=>check(clean($('#code').value));
+  $('#check').onclick=run;
+  $('#code').onkeydown=e=>{ if(e.key==='Enter') run(); };
+  $('#cam').onclick=startCamera;
+}
+async function startCamera(){
+  const wrap=$('#camwrap');
+  if(!('BarcodeDetector' in window)){ wrap.innerHTML='<p class="hint">This browser can’t scan QR codes here. Type the code instead.</p>'; return; }
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    wrap.innerHTML='<video autoplay playsinline muted></video>'; const v=wrap.querySelector('video'); v.srcObject=stream;
+    const det=new BarcodeDetector({formats:['qr_code']});
+    scanTimer=setInterval(async()=>{ try{ const r=await det.detect(v); if(r[0]){ const raw=r[0].rawValue.replace('DOORLIST:',''); stopCamera(); wrap.innerHTML=''; $('#code').value=pretty(clean(raw)); check(clean(raw)); } }catch(e){} },350);
+  }catch(e){ wrap.innerHTML='<p class="hint">Camera isn’t available here. Type the code instead.</p>'; }
+}
+async function check(code){
+  const out=$('#verdict');
+  if(code.length!==6){ out.innerHTML='<div class="verdict warn"><h3>Check the code</h3>Ticket codes have 6 letters and numbers.</div>'; return; }
+  const t=await store.getTicket(code); const e=t&&state.events.find(x=>x.id===t.eventId);
+  if(!t){ out.innerHTML='<div class="verdict bad"><h3>Not on the list</h3>No ticket has this code. Don’t let them in on this ticket.</div>'; return; }
+  const head=`<b>${esc(t.guest)}</b><br>${esc(t.tier)} ticket for ${esc(e?e.name:'this party')}`;
+  if(t.status==='void'){ out.innerHTML=`<div class="verdict bad"><h3>Cancelled</h3>${head}<br>The host cancelled this ticket.</div>`; return; }
+  if(t.status==='used'){ out.innerHTML=`<div class="verdict bad"><h3>Already used</h3>${head}<br>Checked in at ${new Date(t.checkedInAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}. This could be a copied ticket.</div>`; return; }
+  out.innerHTML=`<div class="verdict ok"><h3>Valid ticket</h3>${head}<div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="admit">Let them in</button></div></div>`;
+  $('#admit').onclick=async()=>{
+    const fresh=await store.getTicket(code); if(fresh&&fresh.status!=='valid') return check(code);
+    await store.patchTicket(code,{status:'used',checkedInAt:Date.now()});
+    out.innerHTML=`<div class="verdict ok"><h3>Checked in</h3>${head}</div>`; $('#code').value=''; $('#code').focus();
+  };
+}
+
+$('#nav-parties').onclick=()=>{state.view='parties';render();};
+$('#nav-door').onclick=()=>{state.view='door';render();};
+</script>
+</body>
+</html>
