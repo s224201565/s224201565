@@ -1,0 +1,30 @@
+! ============================================================
+! ISP1 — Internet Service Provider Router 1
+! Berlin Campus Network — WAN Simulation
+! ============================================================
+
+enable
+configure terminal
+
+hostname ISP1
+no ip domain-lookup
+
+line console 0
+ logging synchronous
+line vty 0 15
+ logging synchronous
+exit
+banner motd #Authorised access only#
+
+! --- WAN Links ---
+! To Berlin1
+interface s0/0/0
+ ip address 208.0.0.1 255.255.255.252
+ no shutdown
+
+! To Berlin2
+interface s0/0/1
+ ip address 208.0.0.5 255.255.255.252
+ no shutdown
+
+end
