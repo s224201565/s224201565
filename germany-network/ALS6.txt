@@ -1,0 +1,79 @@
+! ============================================================
+! ALS6 — Access-Layer Switch 6
+! VLAN 60 (Sales & Marketing), Voice VLAN 110
+! Berlin Campus Network — DatacomBerlin VTP Domain
+! ============================================================
+
+enable
+configure terminal
+
+hostname ALS6
+no ip domain-lookup
+
+line console 0
+ logging synchronous
+line vty 0 15
+ logging synchronous
+exit
+banner motd #Authorised access only#
+
+! --- Trunk Links ---
+interface range fa0/1-2
+ switchport mode trunk
+ switchport nonegotiate
+ switchport trunk native vlan 99
+
+! --- VTP ---
+vtp version 2
+vtp domain DatacomBerlin
+vtp password Berlin
+vtp mode client
+
+! --- Access Ports ---
+interface range f0/3-4
+ switchport mode access
+ switchport access vlan 60
+ switchport voice vlan 110
+ mls qos trust cos
+
+! --- STP ---
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree portfast bpduguard default
+
+! --- Port Security ---
+interface range f0/3-4
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 1440
+
+! --- SSH & Security Hardening ---
+ip domain-name Datacom.co.za
+username Datacom privilege 15 algorithm-type scrypt secret Datacom1
+line console 0
+ login local
+ exec-timeout 30
+ logging synchronous
+line vty 0 15
+ login local
+ exec-timeout 30
+ logging synchronous
+ transport input ssh
+exit
+crypto key generate rsa general-keys modulus 2048
+ip ssh version 2
+ip ssh time-out 120
+ip ssh authentication-retries 3
+
+! --- Unused Port Shutdown ---
+interface range f0/6-24, g0/1-2
+ shutdown
+ switchport mode access
+ switchport access vlan 999
+
+! --- Management SVI ---
+interface vlan 100
+ ip address 172.16.100.1 255.255.255.0
+
+end

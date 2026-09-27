@@ -1,0 +1,290 @@
+! ============================================================
+! B.MLS1 — Distribution/Core Multilayer Switch 1
+! VTP Server, HSRP Active for VLANs 10-50, OSPF Router-ID 3.3.3.3
+! Berlin Campus Network — DatacomBerlin VTP Domain
+! ============================================================
+
+enable
+configure terminal
+
+hostname B.MLS1
+no ip domain-lookup
+
+line console 0
+ logging synchronous
+line vty 0 15
+ logging synchronous
+exit
+banner motd #Authorised access only#
+
+! --- Routed Uplinks ---
+! Connection to Main Server
+interface g1/0/20
+ no switchport
+ ip address 172.16.6.2 255.255.255.252
+ no shutdown
+
+! Connection to Backup Server
+interface g1/0/19
+ no switchport
+ ip address 172.16.7.2 255.255.255.252
+ no shutdown
+
+! Connection to Berlin1 (Router)
+interface g1/0/1
+ no switchport
+ ip address 172.16.1.1 255.255.255.252
+ no shutdown
+
+! Connection to Berlin2 (Router)
+interface g1/0/2
+ no switchport
+ ip address 172.16.3.1 255.255.255.252
+ no shutdown
+
+! --- Trunk Links to Access Switches ---
+interface range g1/0/3-10, g1/0/21-24
+ switchport mode trunk
+ switchport nonegotiate
+ switchport trunk native vlan 99
+
+! --- VLANs ---
+vlan 10
+ name Accounting&Finance
+vlan 20
+ name ICT_Services
+vlan 30
+ name Human_Resources
+vlan 40
+ name Executive_Management
+vlan 50
+ name Legal
+vlan 60
+ name Sales_Marketing
+vlan 70
+ name Operations
+vlan 80
+ name Research&Development
+vlan 90
+ name Guest
+vlan 99
+ name Native
+vlan 100
+ name Management
+vlan 110
+ name Voice
+vlan 115
+ name BerlinWifi
+vlan 999
+ name Unused_ports
+
+! --- VTP ---
+vtp version 2
+vtp domain DatacomBerlin
+vtp password Berlin
+vtp mode server
+
+! --- SVIs with HSRP (Active for VLANs 10-50) ---
+interface vlan 10
+ ip address 172.16.10.240 255.255.255.0
+ standby version 2
+ standby 1 ip 172.16.10.254
+ standby 1 priority 110
+ standby 1 preempt
+
+interface vlan 20
+ ip address 172.16.20.240 255.255.255.0
+ standby version 2
+ standby 2 ip 172.16.20.254
+ standby 2 priority 110
+ standby 2 preempt
+
+interface vlan 30
+ ip address 172.16.30.240 255.255.255.0
+ standby version 2
+ standby 3 ip 172.16.30.254
+ standby 3 priority 110
+ standby 3 preempt
+
+interface vlan 40
+ ip address 172.16.40.240 255.255.255.0
+ standby version 2
+ standby 4 ip 172.16.40.254
+ standby 4 priority 110
+ standby 4 preempt
+
+interface vlan 50
+ ip address 172.16.50.240 255.255.255.0
+ standby version 2
+ standby 5 ip 172.16.50.254
+ standby 5 priority 110
+ standby 5 preempt
+
+! --- SVIs with HSRP (Standby for VLANs 60-115) ---
+interface vlan 60
+ ip address 10.3.60.240 255.255.255.0
+ standby version 2
+ standby 6 ip 172.16.60.254
+ standby 6 priority 105
+ standby 6 preempt
+
+interface vlan 70
+ ip address 172.16.70.240 255.255.255.0
+ standby version 2
+ standby 7 ip 172.16.70.254
+ standby 7 priority 105
+ standby 7 preempt
+
+interface vlan 80
+ ip address 172.16.80.240 255.255.255.0
+ standby version 2
+ standby 8 ip 172.16.80.254
+ standby 8 priority 105
+ standby 8 preempt
+
+interface vlan 90
+ ip address 172.16.90.240 255.255.255.0
+ standby version 2
+ standby 9 ip 172.16.90.254
+ standby 9 priority 105
+ standby 9 preempt
+
+interface vlan 100
+ ip address 172.16.100.240 255.255.255.0
+ standby version 2
+ standby 10 ip 172.16.100.254
+ standby 10 priority 105
+ standby 10 preempt
+
+interface vlan 110
+ ip address 172.16.110.240 255.255.255.0
+ standby version 2
+ standby 11 ip 172.16.110.254
+ standby 11 priority 105
+ standby 11 preempt
+
+interface vlan 115
+ ip address 172.16.115.240 255.255.255.0
+ standby version 2
+ standby 13 ip 172.16.115.254
+ standby 13 priority 105
+ standby 13 preempt
+
+! --- STP ---
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10,20,30,40,50 priority 4096
+spanning-tree vlan 60,70,80,90,100,110,115 priority 8192
+
+! --- OSPF ---
+router ospf 1
+ router-id 3.3.3.3
+ network 172.16.1.0 0.0.0.255 area 0
+ network 172.16.3.0 0.0.0.255 area 0
+ network 172.16.6.0 0.0.0.255 area 0
+ network 172.16.7.0 0.0.0.255 area 0
+ network 172.16.10.0 0.0.0.255 area 0
+ network 172.16.20.0 0.0.0.255 area 0
+ network 172.16.30.0 0.0.0.255 area 0
+ network 172.16.40.0 0.0.0.255 area 0
+ network 172.16.50.0 0.0.0.255 area 0
+ network 172.16.60.0 0.0.0.255 area 0
+ network 172.16.70.0 0.0.0.255 area 0
+ network 172.16.80.0 0.0.0.255 area 0
+ network 172.16.90.0 0.0.0.255 area 0
+ network 172.16.99.0 0.0.0.255 area 0
+ network 172.16.100.0 0.0.0.255 area 0
+ network 172.16.110.0 0.0.0.255 area 0
+ network 172.16.115.0 0.0.0.255 area 0
+
+! --- DHCP Pools ---
+ip dhcp excluded-address 172.16.10.121 172.16.10.254
+ip dhcp pool Acc&Fin_POOL
+ network 172.16.10.0 255.255.255.0
+ default-router 172.16.10.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.20.121 172.16.20.254
+ip dhcp pool ICTServ_POOL
+ network 172.16.20.0 255.255.255.0
+ default-router 172.16.20.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.30.121 172.16.30.254
+ip dhcp pool HR_POOL
+ network 172.16.30.0 255.255.255.0
+ default-router 172.16.30.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.40.121 172.16.40.254
+ip dhcp pool ExcMan_POOL
+ network 172.16.40.0 255.255.255.0
+ default-router 172.16.40.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.50.121 172.16.50.254
+ip dhcp pool Legal_POOL
+ network 172.16.50.0 255.255.255.0
+ default-router 172.16.50.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.60.121 172.16.60.254
+ip dhcp pool Sale&Mark_POOL
+ network 172.16.60.0 255.255.255.0
+ default-router 172.16.60.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.70.121 172.16.70.254
+ip dhcp pool Oper_POOL
+ network 172.16.70.0 255.255.255.0
+ default-router 172.16.70.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.80.121 172.16.80.254
+ip dhcp pool R&D_POOL
+ network 172.16.80.0 255.255.255.0
+ default-router 172.16.80.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.90.121 172.16.90.254
+ip dhcp pool Guest_POOL
+ network 172.16.90.0 255.255.255.0
+ default-router 172.16.90.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.100.121 172.16.100.254
+ip dhcp pool Management_POOL
+ network 172.16.100.0 255.255.255.0
+ default-router 172.16.100.254
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.110.121 172.16.110.254
+ip dhcp pool Voice_POOL
+ network 172.16.110.0 255.255.255.0
+ default-router 172.16.110.254
+ option 150 ip 172.16.1.2
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+ip dhcp excluded-address 172.16.115.121 172.16.115.254
+ip dhcp pool Wireless_POOL
+ network 172.16.115.0 255.255.255.0
+ default-router 172.16.115.254
+ option 43 ip 172.16.115.253
+ dns-server 172.16.100.253
+ domain-name datacom.co.za
+
+! --- Unused Port Shutdown ---
+interface range g1/0/11-18, g1/1/1-4
+ shutdown
+
+end
