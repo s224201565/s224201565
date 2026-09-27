@@ -67,9 +67,9 @@ share it, and check it at the door with a live scanner. Built in plain HTML, CSS
 Handles valid, used, and cancelled tickets, with light/dark themes and a mobile-first layout.
 
 ### 🛡️ ITAI402 — Penetration testing skills assessment
-📂 [`itai402-pentest/`](itai402-pentest/)
+🔒 *Available on request*
 
 A full walkthrough of a structured penetration test against an isolated, deliberately vulnerable
 lab VM (Metasploitable 2): enumeration, vulnerability scanning, exploitation, post-exploitation,
-and reporting. Explains the methodology and each tool (Nmap, OWASP ZAP, Metasploit, Steghide)
-step by step. Coursework, performed only in a lab environment disconnected from any real network.
+and reporting, covering Nmap, OWASP ZAP, Metasploit, and Steghide. Coursework, performed only in a
+lab environment disconnected from any real network. Access shared privately on request.
