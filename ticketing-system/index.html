@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Doorlist: house party tickets</title>
+<title>Ticketing System: house party tickets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
@@ -166,7 +166,7 @@ function renderParties(app){
   const evs=[...state.events].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
   app.innerHTML = `
     <div class="banner" style="display:${state.mode==='local'?'block':'none'}">Saving on this device only. Publish the page to share the guest list with your door crew.</div>
-    <h1>Doorlist</h1>
+    <h1>Ticketing System</h1>
     <p class="sub">Tickets for your house party. Make one per guest, send it, check it at the door.</p>
     <button class="btn stub" id="add">Create a party</button>
     <div id="list">${ evs.length? evs.map(e=>{

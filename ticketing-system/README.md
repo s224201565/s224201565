@@ -1,4 +1,4 @@
-# Doorlist — house party tickets
+# Ticketing System — house party tickets
 
 A single-page web app for running the guest list at a house party: create a party, issue a ticket per guest, send it, and check it at the door.
 

@@ -59,8 +59,8 @@ VLANs and VTP, OSPF routing, HSRP first-hop redundancy, Rapid PVST+ spanning tre
 NAT/PAT, ACLs, port security, SSH, and Cisco CME telephony. Includes all device configurations
 and an Ansible automation project.
 
-### 🎟️ Doorlist — House party ticketing app
-📂 [`doorlist/`](doorlist/)
+### 🎟️ Ticketing System — House party ticketing app
+📂 [`ticketing-system/`](ticketing-system/)
 
 A single-page web app for running a guest list: create a party, issue a QR-coded ticket per guest,
 share it, and check it at the door with a live scanner. Built in plain HTML, CSS, and JavaScript.
