@@ -29,7 +29,8 @@ I'm a network engineer based in Gqeberha, South Africa, currently pursuing a Pos
 
 ## Current research
 
-🔐 **Securing Image Provenance Through Lightweight Cryptography and Hardware-Based Identity at the Image Sensor Level*
+🔐 **Securing Image Provenance Through Lightweight Cryptography and Hardware-Based Identity at the Image Sensor Level**
+Exploring how resource-constrained IoT cameras can cryptographically prove image authenticity at the point of capture.
 
 ## Beyond the keyboard
 
