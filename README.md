@@ -65,10 +65,23 @@ A single-page web app for running a guest list: create a party, issue a QR-coded
 share it, and check it at the door with a live scanner. Built in plain HTML, CSS, and JavaScript.
 Handles valid, used, and cancelled tickets, with light/dark themes and a mobile-first layout.
 
-### 🛡️ ITAI402 — Penetration testing skills assessment
-🔒 *Available on request*
+### 🛡️ ITAI402 — Practical security coursework
+🔒 *Full evidence (screenshots + walkthrough) available privately on request*
 
-A full walkthrough of a structured penetration test against an isolated, deliberately vulnerable
-lab VM (Metasploitable 2): enumeration, vulnerability scanning, exploitation, post-exploitation,
-and reporting, covering Nmap, OWASP ZAP, Metasploit, and Steghide. Coursework, performed only in a
-lab environment disconnected from any real network. Access shared privately on request.
+Hands-on offensive-security labs, performed only in controlled lab environments or against public,
+authorised testing targets (e.g. `scanme.nmap.org`, `testphp.vulnweb.com`) — never against systems
+I do not own or lack permission to test. The work spans the full methodology from reconnaissance to
+reporting:
+
+| Area | What I did | Tools |
+|---|---|---|
+| Reconnaissance & OSINT | Passive information gathering from public sources | Page source, `robots.txt`, Wayback Machine, Google dorking |
+| Network scanning & vuln assessment | Host discovery, stealth scanning, service/version detection, CVE identification | Nmap (incl. NSE `vuln` scripts) |
+| Web application security | SQL injection, reflected XSS, CSRF with a crafted form | SQLMap, browser dev tools |
+| Request interception & tampering | Proxying, intercept, Repeater, Base64 decoding, IDOR/auth testing | Burp Suite |
+| Wireless security | WPA2 4-way handshake analysis and offline dictionary cracking | Wireshark, Aircrack-ng |
+| Exploitation & post-exploitation | Backdoor exploitation (vsftpd 2.3.4), privilege escalation, persistence, steganography | Metasploit, Steghide |
+
+Includes a full step-by-step penetration test of an isolated Metasploitable 2 lab VM and a 48-page
+portfolio of evidence. The materials are kept in a private repository and shared with reviewers on
+request.
