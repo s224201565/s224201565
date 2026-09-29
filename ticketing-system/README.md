@@ -14,7 +14,7 @@ A single-page web app for running the guest list at a house party: create a part
 ## Tech
 
 - Plain HTML, CSS and JavaScript in one file (`index.html`), no build step.
-- QR codes: [qrcodejs](https://cdnjs.com/libraries/qrcodejs) from cdnjs; fonts: Bricolage Grotesque and DM Mono from Google Fonts.
+- QR codes: [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT) inlined into the page and drawn directly onto the ticket canvas, so QR codes render with no external dependency (works offline). Fonts: Bricolage Grotesque and DM Mono from Google Fonts.
 - Storage: when hosted as a Claude artifact it uses the artifact's shared database, so the host and door crew see the same list live. Anywhere else it falls back to `localStorage`, which keeps data on that one device only.
 
 ## Run it
