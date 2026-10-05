@@ -59,7 +59,7 @@ NAT/PAT, ACLs, port security, SSH, and Cisco CME telephony. Includes all device 
 and an Ansible automation project.
 
 ### 🎟️ Ticketing System — House party ticketing app
-📂 [`ticketing-system/`](ticketing-system/)
+🔗 **[Live demo](https://s224201565.github.io/s224201565/ticketing-system/)** · 📂 [`ticketing-system/`](ticketing-system/)
 
 A single-page web app for running a guest list: create a party, issue a QR-coded ticket per guest,
 share it, and check it at the door with a live scanner. Built in plain HTML, CSS, and JavaScript.
