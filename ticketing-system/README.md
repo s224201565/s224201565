@@ -21,3 +21,7 @@ A single-page web app for running the guest list at a house party: create a part
 ## Run it
 
 Serve the folder with any static host (e.g. GitHub Pages) so the whole app — including the `jsQR.min.js` scanner file — loads together. Camera scanning needs the page served over HTTPS (GitHub Pages qualifies) and camera permission; if the camera is unavailable, type the code instead. Opening `index.html` on its own still works for issuing and sharing tickets.
+
+## Live demo
+
+Run it here: https://s224201565.github.io/ticketing-system/
