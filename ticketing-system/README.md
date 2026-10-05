@@ -24,4 +24,4 @@ Serve the folder with any static host (e.g. GitHub Pages) so the whole app — i
 
 ## Live demo
 
-Run it here: https://s224201565.github.io/ticketing-system/
+Run it here: https://s224201565.github.io/s224201565/ticketing-system/
