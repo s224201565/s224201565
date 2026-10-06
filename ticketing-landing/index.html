@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Singa Ticketing System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface-2: #1a2236;
+    --accent: #06b6d4;
+    --accent-glow: rgba(6, 182, 212, 0.15);
+    --accent-2: #8b5cf6;
+    --accent-2-glow: rgba(139, 92, 246, 0.12);
+    --text: #f1f5f9;
+    --text-mid: #94a3b8;
+    --text-dim: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --border: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .poster {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 40px 56px;
+    position: relative;
+  }
+
+  /* Ambient glow */
+  .poster::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .poster::after {
+    content: '';
+    position: absolute;
+    bottom: 80px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 52px;
+    position: relative;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid rgba(6,182,212,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(42px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #f1f5f9 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tagline {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-mid);
+    line-height: 1.5;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Dashboard mockup */
+  .dashboard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 52px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  }
+
+  .dash-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ef4444; }
+  .dot-y { background: #f59e0b; }
+  .dot-g { background: #10b981; }
+  .dash-title {
+    margin-left: 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .dash-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  .stat-card {
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .stat-num.cyan { color: var(--accent); }
+  .stat-num.green { color: var(--success); }
+  .stat-num.yellow { color: var(--warning); }
+  .stat-num.purple { color: var(--accent-2); }
+
+  .stat-delta {
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .stat-delta.up { color: var(--success); }
+  .stat-delta.down { color: var(--danger); }
+
+  .dash-table {
+    grid-column: 1 / -1;
+    background: var(--surface-2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .table-head {
+    display: grid;
+    grid-template-columns: 60px 1.4fr 0.8fr 0.7fr 0.6fr;
+    padding: 10px 16px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 60px 1.4fr 0.8fr 0.7fr 0.6fr;
+    padding: 10px 16px;
+    font-size: 12px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-row:last-child { border-bottom: none; }
+
+  .ticket-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  .priority-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .p-high { background: rgba(239,68,68,0.15); color: #f87171; }
+  .p-med { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .p-low { background: rgba(16,185,129,0.15); color: #34d399; }
+
+  .status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .status-dot::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .status-open::before { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .status-progress::before { background: var(--warning); box-shadow: 0 0 6px var(--warning); }
+  .status-resolved::before { background: var(--success); box-shadow: 0 0 6px var(--success); }
+
+  /* Features grid */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 52px;
+  }
+
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    transition: border-color 0.25s;
+    position: relative;
+  }
+  .feature:hover {
+    border-color: rgba(6,182,212,0.25);
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    font-size: 18px;
+  }
+  .fi-1 { background: rgba(6,182,212,0.12); color: var(--accent); }
+  .fi-2 { background: rgba(139,92,246,0.12); color: var(--accent-2); }
+  .fi-3 { background: rgba(16,185,129,0.12); color: var(--success); }
+  .fi-4 { background: rgba(245,158,11,0.12); color: var(--warning); }
+  .fi-5 { background: rgba(239,68,68,0.12); color: var(--danger); }
+  .fi-6 { background: rgba(99,102,241,0.12); color: #818cf8; }
+
+  .feature h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .feature p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  /* Footer */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 16px;
+    color: #fff;
+  }
+  .brand-text {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-right {
+    text-align: right;
+  }
+  .footer-url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+  .footer-copy {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .poster { padding: 32px 20px 40px; }
+    .dash-body { grid-template-columns: 1fr 1fr; }
+    .features { grid-template-columns: 1fr; }
+    .table-head, .table-row { grid-template-columns: 50px 1fr 0.7fr 0.6fr; }
+    .table-head > :nth-child(5), .table-row > :nth-child(5) { display: none; }
+    .footer { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-right { text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .dash-body { grid-template-columns: 1fr; }
+    .stat-card { padding: 14px; }
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --text: #0f172a;
+      --text-mid: #475569;
+      --text-dim: #64748b;
+      --border: rgba(0,0,0,0.08);
+    }
+    h1 {
+      background: linear-gradient(135deg, #0f172a 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .dashboard { box-shadow: 0 24px 80px rgba(0,0,0,0.08); }
+  }
+  :root:not([data-theme="light"]) {
+    /* dark is default, no override needed */
+  }
+  :root[data-theme="dark"] {
+    /* force dark */
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header class="header">
+    <div class="badge">IT Helpdesk Platform v2.0</div>
+    <h1>Singa Ticketing<br>System</h1>
+    <p class="tagline">Streamline your IT support workflow with intelligent ticket routing, real-time tracking, and actionable analytics.</p>
+  </header>
+
+  <div class="dashboard">
+    <div class="dash-bar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="dash-title">singa-dashboard — live</span>
+    </div>
+    <div class="dash-body">
+      <div class="stat-card">
+        <div class="stat-label">Open tickets</div>
+        <div class="stat-num cyan">127</div>
+        <div class="stat-delta down">↓ 12% from last week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Resolved today</div>
+        <div class="stat-num green">43</div>
+        <div class="stat-delta up">↑ 18% improvement</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg. response</div>
+        <div class="stat-num yellow">14m</div>
+        <div class="stat-delta up">↑ 24% faster</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SLA compliance</div>
+        <div class="stat-num purple">96%</div>
+        <div class="stat-delta up">↑ 3% this month</div>
+      </div>
+
+      <div class="dash-table">
+        <div class="table-head">
+          <span>ID</span>
+          <span>Subject</span>
+          <span>Assigned to</span>
+          <span>Priority</span>
+          <span>Status</span>
+        </div>
+        <div class="table-row">
+          <span class="ticket-id">#4021</span>
+          <span>VPN gateway timeout on campus</span>
+          <span style="color:var(--text-mid)">T. Mkhize</span>
+          <span><span class="priority-tag p-high">High</span></span>
+          <span class="status-dot status-open">Open</span>
+        </div>
+        <div class="table-row">
+          <span class="ticket-id">#4019</span>
+          <span>Email sync failure — Outlook 365</span>
+          <span style="color:var(--text-mid)">N. Dlamini</span>
+          <span><span class="priority-tag p-med">Medium</span></span>
+          <span class="status-dot status-progress">In progress</span>
+        </div>
+        <div class="table-row">
+          <span class="ticket-id">#4017</span>
+          <span>New user provisioning request</span>
+          <span style="color:var(--text-mid)">S. Nguluzane</span>
+          <span><span class="priority-tag p-low">Low</span></span>
+          <span class="status-dot status-resolved">Resolved</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon fi-1">⚡</div>
+      <h3>Real-time tracking</h3>
+      <p>Live ticket status updates with instant notifications to agents and end users.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon fi-2">🔀</div>
+      <h3>Smart routing</h3>
+      <p>Priority-based assignment that matches tickets to the right team automatically.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon fi-3">✓</div>
+      <h3>SLA management</h3>
+      <p>Configurable service-level targets with breach alerts and escalation triggers.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon fi-4">📊</div>
+      <h3>Analytics dashboard</h3>
+      <p>Resolution trends, agent workload, and response-time metrics at a glance.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon fi-5">🔔</div>
+      <h3>Auto escalation</h3>
+      <p>Unresolved tickets escalate through tiers based on time and severity rules.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon fi-6">🔐</div>
+      <h3>Role-based access</h3>
+      <p>Granular permissions for admins, agents, and end users with audit logging.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="brand-mark">
+      <div class="brand-logo">S</div>
+      <span class="brand-text">Singa Ticketing</span>
+    </div>
+    <div class="footer-right">
+      <div class="footer-url">singa-tickets.app</div>
+      <div class="footer-copy">Built by Singalakha Nguluzane · 2026</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
