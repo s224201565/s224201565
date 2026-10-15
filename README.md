@@ -89,6 +89,20 @@ reporting:
 | Exfiltration & anti-forensics | Concealed data inside a JPEG (AES-128) to exfiltrate past traffic inspection | Steghide |
 | Log analysis & forensics | `auth.log` review, Samba log correlation, Cyber Kill Chain mapping and attacker-artefact identification | Linux CLI (`grep`, `awk`) |
 
+**Cyber Kill Chain mapping — Metasploitable 2 engagement:**
+
+| # | Kill Chain stage | What I did | Tools |
+|---|---|---|---|
+| 1 | Reconnaissance | Host discovery, full-port SYN scan, service/version detection, and OSINT footprinting | Nmap, SpiderFoot, Google dorking |
+| 2 | Weaponisation | Selected and configured matching exploit + payload modules (vsftpd backdoor; Samba `usermap_script` with a reverse shell) | Metasploit |
+| 3 | Delivery | Delivered the exploit to the vulnerable service — malicious FTP username (`:)`) and crafted Samba username map | Metasploit |
+| 4 | Exploitation | Triggered the backdoors for remote code execution (CVE-2011-2523, CVE-2007-2447) | Metasploit |
+| 5 | Installation | Established a foothold, escalated to root via a SUID binary, and planted a backdoor user for persistence | Meterpreter, SUID (`nmap`), `useradd` |
+| 6 | Command & Control | Operated the compromised host through an interactive root session (bind shell / reverse netcat) | Meterpreter, netcat |
+| 7 | Actions on Objectives | Enumerated and exfiltrated sensitive data — `/etc/shadow`/`/etc/passwd`, offline hash cracking, steganographic exfiltration | John the Ripper, Hashcat, Steghide |
+
+**Blue-team reflection:** traced the attacker's artefacts in `auth.log` and the Samba logs back to each Kill Chain stage, and proposed detection and prevention controls per stage.
+
 Includes a step-by-step penetration test of an isolated Metasploitable 2 lab VM, a formally assessed
 practical exam (Samba exploitation, Greenbone vulnerability scan, log analysis and Kill Chain
 mapping), and a 48-page portfolio of evidence. The materials are kept in a private repository and
