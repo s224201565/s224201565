@@ -66,12 +66,6 @@ share it, and check it at the door with a live camera scanner. Built in plain HT
 JavaScript, with a neon dark theme and a mobile-first layout. Handles valid, used, and cancelled
 tickets.
 
-### 🎨 Ticketing System — Landing page design
-🔗 **[Live demo](https://s224201565.github.io/s224201565/ticketing-landing/)** · 📂 [`ticketing-landing/`](ticketing-landing/)
-
-A neon-dark marketing/landing-page UI design (dashboard mockup, stat cards, feature grid) for a
-ticketing platform concept. A static visual design piece — pure HTML and CSS, no build step.
-
 ### 🛡️ ITAI402 — Practical security coursework
 🔒 *Full evidence (screenshots + walkthrough) available privately on request*
 
