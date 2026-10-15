@@ -22,10 +22,10 @@ I'm a network engineer based in Gqeberha, South Africa, currently pursuing a Pos
 | Area | Tools & Technologies |
 |------|---------------------|
 | **Networking** | Cisco IOS, VLANs, OSPF, HSRP, STP, EtherChannel, ACLs, NAT, VPNs, firewalls |
-| **Cybersecurity** | OSINT, incident analysis, security frameworks & compliance, Kali Linux |
+| **Cybersecurity** | Penetration testing, vulnerability assessment, exploitation & privilege escalation, OSINT, incident analysis, security frameworks & compliance, Kali Linux |
 | **Automation** | Ansible, Python, C# |
 | **Cloud & DevOps** | Docker, Terraform, AWS, CI/CD |
-| **Tools** | Wireshark, Packet Tracer, GNS3, Git |
+| **Tools** | Nmap, Metasploit, Burp Suite, Wireshark, Packet Tracer, GNS3, Git |
 
 ## Current research
 
@@ -76,13 +76,17 @@ reporting:
 
 | Area | What I did | Tools |
 |---|---|---|
-| Reconnaissance & OSINT | Passive information gathering from public sources | Page source, `robots.txt`, Wayback Machine, Google dorking |
-| Network scanning & vuln assessment | Host discovery, stealth scanning, service/version detection, CVE identification | Nmap (incl. NSE `vuln` scripts) |
+| Reconnaissance & OSINT | Passive information gathering and automated OSINT footprinting | SpiderFoot, page source review, `robots.txt`, Wayback Machine, Google dorking |
+| Network enumeration | Host discovery, full-port SYN stealth scanning, service/version detection | Nmap (`-sn`, `-sS`, `-sV`, `-p-`) |
+| Vulnerability assessment | Web-app scanning (MD5 hash disclosure, CSRF, missing security headers — CWE) and service-layer CVE identification (vsftpd, Samba, distccd) | OWASP ZAP, Nmap NSE `vuln`, Greenbone/OpenVAS |
 | Web application security | SQL injection, reflected XSS, CSRF with a crafted form | SQLMap, browser dev tools |
 | Request interception & tampering | Proxying, intercept, Repeater, Base64 decoding, IDOR/auth testing | Burp Suite |
-| Wireless security | WPA2 4-way handshake analysis and offline dictionary cracking | Wireshark, Aircrack-ng |
-| Vulnerability scanning | Authenticated/unauthenticated scanning, critical CVE identification | Greenbone/OpenVAS |
-| Exploitation & post-exploitation | Backdoor exploitation (vsftpd 2.3.4, Samba `usermap_script` / CVE-2007-2447), privilege escalation, persistence, steganography | Metasploit, Steghide |
+| Wireless security | WPA2 4-way handshake capture and offline dictionary cracking | Wireshark, Aircrack-ng |
+| Exploitation | Gained a root session via two backdoors — vsftpd 2.3.4 bind shell (CVE-2011-2523) and Samba `usermap_script` (CVE-2007-2447) | Metasploit, Meterpreter |
+| Privilege escalation | Escalated from an unprivileged SSH user (`uid=1000`) to root (`euid=0`) by abusing a misconfigured SUID binary (`nmap --interactive`) | SUID exploitation, Linux CLI |
+| Credential access | Extracted `/etc/shadow` and `/etc/passwd`; identified weak MD5-crypt hashing suited to offline cracking | John the Ripper, Hashcat |
+| Persistence | Created a hidden backdoor user with shell access to survive patching of the original vector | `useradd`, `openssl passwd` |
+| Exfiltration & anti-forensics | Concealed data inside a JPEG (AES-128) to exfiltrate past traffic inspection | Steghide |
 | Log analysis & forensics | `auth.log` review, Samba log correlation, Cyber Kill Chain mapping and attacker-artefact identification | Linux CLI (`grep`, `awk`) |
 
 Includes a step-by-step penetration test of an isolated Metasploitable 2 lab VM, a formally assessed
