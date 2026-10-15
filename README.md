@@ -84,7 +84,7 @@ reporting:
 | Wireless security | WPA2 4-way handshake capture and offline dictionary cracking | Wireshark, Aircrack-ng |
 | Exploitation | Gained a root session via two backdoors — vsftpd 2.3.4 bind shell (CVE-2011-2523) and Samba `usermap_script` (CVE-2007-2447) | Metasploit, Meterpreter |
 | Privilege escalation | Escalated from an unprivileged SSH user (`uid=1000`) to root (`euid=0`) by abusing a misconfigured SUID binary (`nmap --interactive`) | SUID exploitation, Linux CLI |
-| Credential access | Extracted `/etc/shadow` and `/etc/passwd`; identified weak MD5-crypt hashing suited to offline cracking | John the Ripper, Hashcat |
+| Credential access | Extracted `/etc/shadow` and `/etc/passwd` and cracked the weak MD5-crypt hashes offline | John the Ripper, Hashcat |
 | Persistence | Created a hidden backdoor user with shell access to survive patching of the original vector | `useradd`, `openssl passwd` |
 | Exfiltration & anti-forensics | Concealed data inside a JPEG (AES-128) to exfiltrate past traffic inspection | Steghide |
 | Log analysis & forensics | `auth.log` review, Samba log correlation, Cyber Kill Chain mapping and attacker-artefact identification | Linux CLI (`grep`, `awk`) |
