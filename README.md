@@ -51,12 +51,12 @@ English · isiXhosa · isiZulu
 > A read-only showcase of my work. Browse the folders below to view each project.
 
 ### 🖧 Germany Network — Enterprise campus network
-📂 [`germany-network/`](germany-network/)
+🔗 **[View repository](https://github.com/s224201565/Germany-Network)**
 
-A three-tier campus network (access, distribution, core) built in Cisco IOS with full redundancy:
-VLANs and VTP, OSPF routing, HSRP first-hop redundancy, Rapid PVST+ spanning tree, DHCP,
-NAT/PAT, ACLs, port security, SSH, and Cisco CME telephony. Includes all device configurations
-and an Ansible automation project.
+A three-tier campus network (access, distribution, core) built in Cisco Packet Tracer with full
+redundancy: VLANs and VTP, OSPF routing, HSRP first-hop redundancy, Rapid PVST+ spanning tree,
+DHCP, NAT/PAT, ACLs, port security, SSH, and Cisco CME telephony. Includes the live Packet Tracer
+project, all device configurations, an RFC design document, and an Ansible automation project.
 
 ### 🎟️ Ticketing System — House party ticketing app
 🔗 **[Live demo](https://s224201565.github.io/s224201565/ticketing-system/)** · 📂 [`ticketing-system/`](ticketing-system/)
