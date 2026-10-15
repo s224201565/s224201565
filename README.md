@@ -1,6 +1,6 @@
 # Hi, I'm Singalakha Nguluzane 👋
 
-**Network Engineer | Cybersecurity Researcher | Rugby Player**
+**Network Engineer | Cybersecurity Postgraduate | Rugby Player**
 
 I'm a network engineer based in Gqeberha, South Africa, currently pursuing a Postgraduate Diploma in Cybersecurity at Nelson Mandela University. I build, secure, and automate networks — and I'm expanding into cloud engineering and DevOps.
 
@@ -87,8 +87,11 @@ reporting:
 | Web application security | SQL injection, reflected XSS, CSRF with a crafted form | SQLMap, browser dev tools |
 | Request interception & tampering | Proxying, intercept, Repeater, Base64 decoding, IDOR/auth testing | Burp Suite |
 | Wireless security | WPA2 4-way handshake analysis and offline dictionary cracking | Wireshark, Aircrack-ng |
-| Exploitation & post-exploitation | Backdoor exploitation (vsftpd 2.3.4), privilege escalation, persistence, steganography | Metasploit, Steghide |
+| Vulnerability scanning | Authenticated/unauthenticated scanning, critical CVE identification | Greenbone/OpenVAS |
+| Exploitation & post-exploitation | Backdoor exploitation (vsftpd 2.3.4, Samba `usermap_script` / CVE-2007-2447), privilege escalation, persistence, steganography | Metasploit, Steghide |
+| Log analysis & forensics | `auth.log` review, Samba log correlation, Cyber Kill Chain mapping and attacker-artefact identification | Linux CLI (`grep`, `awk`) |
 
-Includes a full step-by-step penetration test of an isolated Metasploitable 2 lab VM and a 48-page
-portfolio of evidence. The materials are kept in a private repository and shared with reviewers on
-request.
+Includes a step-by-step penetration test of an isolated Metasploitable 2 lab VM, a formally assessed
+practical exam (Samba exploitation, Greenbone vulnerability scan, log analysis and Kill Chain
+mapping), and a 48-page portfolio of evidence. The materials are kept in a private repository and
+shared with reviewers on request.
