@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Singalakha Nguluzane — Network &amp; Security Engineer</title>
+<meta name="description" content="Portfolio of Singalakha Nguluzane — network engineer and cybersecurity postgraduate in Gqeberha, South Africa. Networking, offensive security, automation and cloud.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e1a; --surface:#111827; --surface2:#1a2236; --ink:#f1f5f9; --mid:#94a3b8; --dim:#64748b;
+    --accent:#06b6d4; --accent2:#8b5cf6; --line:rgba(255,255,255,.08);
+    --ok:#34d399; --warn:#fbbf24;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;
+    background-image:radial-gradient(680px circle at 88% -6%, rgba(6,182,212,.12), transparent 60%),radial-gradient(560px circle at -12% 12%, rgba(139,92,246,.10), transparent 60%);
+    background-attachment:fixed;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--accent);color:#021016;padding:10px 16px;border-radius:0 0 10px 0;z-index:100;font-weight:700}
+  .skip:focus{left:0}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink)}
+  .brand:hover{text-decoration:none}
+  .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#021016;font-weight:900}
+  .nav-links{display:flex;gap:22px}
+  .nav-links a{color:var(--mid);font-weight:600;font-size:.95rem}
+  .nav-links a:hover,.nav-links a.active{color:var(--ink);text-decoration:none}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 10px;cursor:pointer}
+
+  /* hero */
+  .hero{padding:72px 0 48px}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.08em;color:var(--accent);
+    background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.22);padding:6px 14px;border-radius:20px;display:inline-block;margin-bottom:22px}
+  .hero h1{font-size:clamp(38px,6.5vw,62px);line-height:1.04;font-weight:900;letter-spacing:-.03em;
+    background:linear-gradient(135deg,#f1f5f9 35%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+  .hero .role{font-size:1.15rem;color:var(--mid);font-weight:600;margin-bottom:18px}
+  .hero p.lead{font-size:1.08rem;color:var(--mid);max-width:620px;margin-bottom:28px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 22px;font-weight:700;cursor:pointer;font-size:.98rem;border:1px solid var(--line);background:var(--surface2);color:var(--ink)}
+  .btn:hover{text-decoration:none;border-color:rgba(6,182,212,.4)}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#021016;border:0;box-shadow:0 8px 28px rgba(6,182,212,.28)}
+  .meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:26px;color:var(--dim);font-size:.92rem}
+  .meta span{display:inline-flex;align-items:center;gap:7px}
+
+  section{padding:46px 0;border-top:1px solid var(--line)}
+  .sec-head{font-family:"JetBrains Mono",monospace;font-size:.8rem;letter-spacing:.08em;color:var(--accent);margin-bottom:8px}
+  h2{font-size:clamp(26px,4vw,34px);font-weight:800;letter-spacing:-.02em;margin-bottom:22px}
+  h3{font-size:1.2rem;font-weight:700;margin-bottom:6px}
+
+  .about p{color:var(--mid);max-width:720px;margin-bottom:14px}
+
+  /* skills */
+  .skillgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .skillcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .skillcard h3{font-size:1rem;color:var(--accent);margin-bottom:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:.82rem;background:var(--surface2);border:1px solid var(--line);color:var(--ink);padding:5px 12px;border-radius:999px}
+
+  /* projects */
+  .projects{display:grid;gap:18px}
+  .project{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;transition:border-color .2s,transform .2s}
+  .project:hover{border-color:rgba(6,182,212,.3);transform:translateY(-2px)}
+  .project .top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+  .project h3{display:flex;align-items:center;gap:10px}
+  .tag{font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .tag.live{background:rgba(52,211,153,.14);color:var(--ok)}
+  .tag.code{background:rgba(6,182,212,.14);color:var(--accent)}
+  .tag.private{background:rgba(251,191,36,.14);color:var(--warn)}
+  .project p{color:var(--mid);margin-bottom:14px}
+  .project .links{display:flex;flex-wrap:wrap;gap:10px}
+  .project .links a{font-size:.9rem;font-weight:600;border:1px solid var(--line);padding:7px 14px;border-radius:10px}
+  .project .links a:hover{text-decoration:none;border-color:rgba(6,182,212,.4)}
+  .stacklist{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .stacklist .chip{font-size:.74rem;padding:3px 9px}
+
+  /* two-col */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card h3{color:var(--ink)}
+  ul.clean{list-style:none}
+  ul.clean li{padding:9px 0;border-top:1px solid var(--line);color:var(--mid)}
+  ul.clean li:first-child{border-top:0}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  ul.clean li .when{display:block;font-size:.82rem;color:var(--dim);font-family:"JetBrains Mono",monospace}
+
+  .research{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(139,92,246,.06));border:1px solid rgba(6,182,212,.18);border-radius:16px;padding:26px}
+  .research h3{color:var(--accent);font-size:1.15rem}
+  .research p{color:var(--mid);margin-top:6px}
+
+  /* contact */
+  .contact-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--dim);font-size:.88rem;text-align:center}
+  footer a{color:var(--mid)}
+
+  @media (max-width:760px){
+    .nav-links{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 0}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:12px 20px}
+    .menu-btn{display:inline-block}
+    .cols{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="logo">S</span> Singalakha Nguluzane</a>
+    <nav class="nav-links" id="navlinks" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navlinks">☰ Menu</button>
+  </div>
+</header>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- HERO -->
+<section class="hero" style="border-top:0">
+  <div class="wrap">
+    <span class="eyebrow">Network &amp; Security Engineer</span>
+    <h1>Building, securing and<br>automating networks.</h1>
+    <p class="role">Network Engineer · Cybersecurity Postgraduate · Rugby Player</p>
+    <p class="lead">I design and secure enterprise networks, run hands-on offensive-security labs, and automate
+      infrastructure — now expanding into cloud engineering and DevOps. Based in Gqeberha, South Africa.</p>
+    <div class="cta">
+      <a class="btn primary" href="#projects">View my work</a>
+      <a class="btn" href="https://github.com/s224201565" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <div class="meta">
+      <span>📍 Gqeberha, South Africa</span>
+      <span>🎓 Nelson Mandela University</span>
+      <span>🗣️ English · isiXhosa · isiZulu</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="wrap">
+    <p class="sec-head">01 — About</p>
+    <h2>From networks to network defence</h2>
+    <p>My foundation is enterprise networking — I build multi-layer campus networks with redundancy, dynamic routing
+      and first-hop resilience, then harden them with ACLs, port security and secure management. That grounding is
+      what pulled me into cybersecurity: you can't defend what you don't understand at the packet level.</p>
+    <p>I'm now a postgraduate cybersecurity student, working through the full offensive-security methodology in
+      controlled labs — reconnaissance, exploitation, privilege escalation, persistence and post-exploitation — and
+      mapping each step back to detection and prevention controls. Alongside that I automate with Ansible and Python,
+      and I'm building toward cloud engineering and DevOps.</p>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <p class="sec-head">02 — Skills</p>
+    <h2>Technical toolkit</h2>
+    <div class="skillgrid">
+      <div class="skillcard">
+        <h3>Networking</h3>
+        <div class="chips">
+          <span class="chip">Cisco IOS</span><span class="chip">VLANs / VTP</span><span class="chip">OSPF</span>
+          <span class="chip">HSRP</span><span class="chip">STP</span><span class="chip">EtherChannel</span>
+          <span class="chip">ACLs</span><span class="chip">NAT/PAT</span><span class="chip">VPNs</span><span class="chip">Firewalls</span>
+        </div>
+      </div>
+      <div class="skillcard">
+        <h3>Cybersecurity</h3>
+        <div class="chips">
+          <span class="chip">Penetration testing</span><span class="chip">Vulnerability assessment</span>
+          <span class="chip">Exploitation</span><span class="chip">Privilege escalation</span><span class="chip">OSINT</span>
+          <span class="chip">Incident analysis</span><span class="chip">Kali Linux</span><span class="chip">Security frameworks</span>
+        </div>
+      </div>
+      <div class="skillcard">
+        <h3>Security tools</h3>
+        <div class="chips">
+          <span class="chip">Nmap</span><span class="chip">Metasploit</span><span class="chip">Burp Suite</span>
+          <span class="chip">Wireshark</span><span class="chip">OWASP ZAP</span><span class="chip">Aircrack-ng</span>
+          <span class="chip">SQLMap</span><span class="chip">John / Hashcat</span>
+        </div>
+      </div>
+      <div class="skillcard">
+        <h3>Automation</h3>
+        <div class="chips">
+          <span class="chip">Ansible</span><span class="chip">Python</span><span class="chip">C#</span><span class="chip">Git</span>
+        </div>
+      </div>
+      <div class="skillcard">
+        <h3>Cloud &amp; DevOps</h3>
+        <div class="chips">
+          <span class="chip">AWS</span><span class="chip">Docker</span><span class="chip">Terraform</span><span class="chip">CI/CD</span>
+        </div>
+      </div>
+      <div class="skillcard">
+        <h3>Labs &amp; simulation</h3>
+        <div class="chips">
+          <span class="chip">Packet Tracer</span><span class="chip">GNS3</span><span class="chip">Metasploitable</span><span class="chip">VirtualBox</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <p class="sec-head">03 — Selected work</p>
+    <h2>Projects</h2>
+    <div class="projects">
+
+      <article class="project">
+        <div class="top">
+          <h3>🖧 Berlin Campus Network</h3>
+          <span class="tag code">Networking</span>
+        </div>
+        <p>A three-tier enterprise campus network (access, distribution, core) built in Cisco Packet Tracer with full
+          redundancy: 13 VLANs with VTP, OSPF routing, HSRP first-hop redundancy, Rapid PVST+, DHCP with split scopes,
+          NAT/PAT over dual WAN links, ACLs, port security, SSH, and CME IP telephony. Ships with the live Packet Tracer
+          project, all device configs, an RFC-style design document and an Ansible automation project.</p>
+        <div class="stacklist">
+          <span class="chip">Cisco IOS</span><span class="chip">OSPF</span><span class="chip">HSRP</span><span class="chip">Ansible</span>
+        </div>
+        <div class="links"><a href="https://github.com/s224201565/Germany-Network" target="_blank" rel="noopener">View repository ↗</a></div>
+      </article>
+
+      <article class="project">
+        <div class="top">
+          <h3>🎟️ Ticketing System</h3>
+          <span class="tag live">Live app</span>
+        </div>
+        <p>A single-page web app for running a house-party guest list: create a party, issue a QR-coded ticket per guest,
+          share it, and check people in at the door with a live camera scanner. Neon dark theme, offline-capable QR
+          generation and scanning (no external services), and valid / used / cancelled ticket handling.</p>
+        <div class="stacklist">
+          <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">QR / camera</span>
+        </div>
+        <div class="links">
+          <a href="ticketing-system/" target="_blank" rel="noopener">Live demo ↗</a>
+          <a href="https://github.com/s224201565/s224201565/tree/main/ticketing-system" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="top">
+          <h3>🎨 Ticketing Platform — landing design</h3>
+          <span class="tag live">Live design</span>
+        </div>
+        <p>A neon-dark marketing/landing-page UI design for a ticketing platform concept — dashboard mockup, stat cards,
+          feature grid and glowing status indicators. A static visual-design piece showcasing product UI and layout.</p>
+        <div class="stacklist"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">UI design</span></div>
+        <div class="links"><a href="ticketing-landing/" target="_blank" rel="noopener">Live demo ↗</a></div>
+      </article>
+
+      <article class="project">
+        <div class="top">
+          <h3>🛡️ Offensive Security Coursework (ITAI402)</h3>
+          <span class="tag private">Private · on request</span>
+        </div>
+        <p>Full offensive-security labs performed only in controlled environments and against authorised targets. A
+          complete Metasploitable 2 engagement mapped to the Cyber Kill Chain: reconnaissance and OSINT, Nmap
+          enumeration, exploitation of two backdoors (vsftpd 2.3.4 — CVE-2011-2523, and Samba usermap — CVE-2007-2447),
+          SUID privilege escalation to root, offline hash cracking, persistence, steganographic exfiltration, and a
+          blue-team log-analysis reflection. Includes a 48-page portfolio of evidence.</p>
+        <div class="stacklist">
+          <span class="chip">Metasploit</span><span class="chip">Nmap</span><span class="chip">Burp Suite</span>
+          <span class="chip">SQLMap</span><span class="chip">Aircrack-ng</span><span class="chip">Kill Chain</span>
+        </div>
+        <div class="links"><a href="https://github.com/s224201565" target="_blank" rel="noopener">Access shared privately on request ↗</a></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section id="credentials">
+  <div class="wrap">
+    <p class="sec-head">04 — Credentials</p>
+    <h2>Education &amp; certifications</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>Education</h3>
+        <ul class="clean">
+          <li><b>Postgraduate Diploma in Cybersecurity</b><span class="when">Nelson Mandela University · 2026–present</span></li>
+          <li><b>Advanced Diploma in Information Technology</b><span class="when">Nelson Mandela University · 2025</span></li>
+          <li><b>Diploma in IT (Communication Networks)</b><span class="when">Nelson Mandela University · 2022–2024</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Certifications</h3>
+        <ul class="clean">
+          <li><b>CCNA — Enterprise Networking, Security &amp; Automation</b><span class="when">Cisco</span></li>
+          <li><b>CCNAv7 — Introduction to Networks</b><span class="when">Cisco</span></li>
+          <li><b>CCNA — Cyber Ops</b><span class="when">Cisco</span></li>
+          <li><b>Introduction to Cybersecurity</b><span class="when">Cisco</span></li>
+          <li><b><a href="certificates/Codewrkx-Intro-to-Cloud-Engineering-AWS.jpg" target="_blank" rel="noopener">Introduction to Cloud Engineering (AWS)</a></b><span class="when">Codewrkx</span></li>
+          <li><b><a href="certificates/Huawei-Overview-of-AI.pdf" target="_blank" rel="noopener">Overview of AI</a></b><span class="when">Huawei</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="wrap">
+    <p class="sec-head">05 — Research</p>
+    <h2>Current research</h2>
+    <div class="research">
+      <h3>🔐 Securing Image Provenance Through Lightweight Cryptography and Hardware-Based Identity at the Image Sensor Level</h3>
+      <p>Exploring how resource-constrained IoT cameras can cryptographically prove image authenticity at the point of
+        capture — binding provenance to hardware identity before an image ever leaves the sensor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <p class="sec-head">06 — Contact</p>
+    <h2>Get in touch</h2>
+    <p class="about" style="color:var(--mid);max-width:620px">Open to graduate roles and internships in networking,
+      cybersecurity, and cloud. The fastest way to reach me is through GitHub.</p>
+    <div class="contact-cta">
+      <a class="btn primary" href="https://github.com/s224201565" target="_blank" rel="noopener">GitHub ↗</a>
+      <!-- TODO: add your LinkedIn and a contact email here -->
+      <a class="btn" href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Built by Singalakha Nguluzane · Hosted on GitHub Pages · <span id="yr"></span>
+  </div>
+</footer>
+
+<script>
+  // mobile menu
+  var mb=document.getElementById('menuBtn'), nl=document.getElementById('navlinks');
+  if(mb){ mb.addEventListener('click',function(){ var o=nl.classList.toggle('open'); mb.setAttribute('aria-expanded',o?'true':'false'); }); }
+  nl && nl.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ nl.classList.remove('open'); mb&&mb.setAttribute('aria-expanded','false'); }); });
+  // active nav link on scroll
+  try{
+    var links=[].slice.call(document.querySelectorAll('.nav-links a'));
+    var map={}; links.forEach(function(a){ var id=a.getAttribute('href').slice(1); var s=document.getElementById(id); if(s) map[id]=a; });
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a)a.classList.add('active'); } }); },{rootMargin:'-45% 0px -50% 0px'});
+    Object.keys(map).forEach(function(id){ io.observe(document.getElementById(id)); });
+  }catch(e){}
+  // year
+  var y=document.getElementById('yr'); if(y) y.textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
