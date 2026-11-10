@@ -58,14 +58,6 @@ redundancy: VLANs and VTP, OSPF routing, HSRP first-hop redundancy, Rapid PVST+ 
 DHCP, NAT/PAT, ACLs, port security, SSH, and Cisco CME telephony. Includes the live Packet Tracer
 project, all device configurations, an RFC design document, and an Ansible automation project.
 
-### 🎟️ Ticketing System — House party ticketing app
-🔗 **[Live demo](https://s224201565.github.io/s224201565/ticketing-system/)** · 📂 [`ticketing-system/`](ticketing-system/)
-
-A single-page web app for running a guest list: create a party, issue a QR-coded ticket per guest,
-share it, and check it at the door with a live camera scanner. Built in plain HTML, CSS, and
-JavaScript, with a neon dark theme and a mobile-first layout. Handles valid, used, and cancelled
-tickets.
-
 ### 🛡️ ITAI402 — Practical security coursework
 🔒 *Full evidence (screenshots + walkthrough) available privately on request*
 
