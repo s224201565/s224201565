@@ -58,7 +58,7 @@ redundancy: VLANs and VTP, OSPF routing, HSRP first-hop redundancy, Rapid PVST+ 
 DHCP, NAT/PAT, ACLs, port security, SSH, and Cisco CME telephony. Includes the live Packet Tracer
 project, all device configurations, an RFC design document, and an Ansible automation project.
 
-### 🛡️ ITAI402 — Practical security coursework
+### 🛡️ ITAI402/ICCT401 — Practical security coursework
 🔒 *Full evidence (screenshots + walkthrough) available privately on request*
 
 Hands-on offensive-security labs, performed only in controlled lab environments or against public,
