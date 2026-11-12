@@ -8,7 +8,7 @@ I'm a network engineer based in Gqeberha, South Africa, currently pursuing a Pos
 
 - 🎓 **Postgraduate Diploma in Cybersecurity** — Nelson Mandela University *(2026 – present)*
 - 🎓 **Advanced Diploma in Information Technology** — Nelson Mandela University *(2025)*
-- 🎓 **Diploma in IT (Communication Networks)** — Nelson Mandela University *(2021 – 2024)*
+- 🎓 **Diploma in IT (Communication Networks)** — Nelson Mandela University *(2024)*
 
 ## Cisco Networking Academy courses
 
